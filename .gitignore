@@ -1,0 +1,14 @@
+*.class
+
+# Package Files #
+*.war
+*.ear
+*.DS_Store
+.classpath
+.project
+bin
+dist
+build
+.settings
+.pydevproject
+
