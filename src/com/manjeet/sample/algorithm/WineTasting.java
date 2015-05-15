@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.algorithm;
 
 
 import java.io.BufferedReader;

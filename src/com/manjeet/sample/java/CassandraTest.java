@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.java;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;

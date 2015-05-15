@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.java;
 import java.io.IOException;
 import java.util.StringTokenizer;
 

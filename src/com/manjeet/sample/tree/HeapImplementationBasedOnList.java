@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.tree;
 
 import java.util.Map;
 import java.util.SortedMap;

@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.datastructure;
 
 /**
  ** Java Program to implement Priority Queue

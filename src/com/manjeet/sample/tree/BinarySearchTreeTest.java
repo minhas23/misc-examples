@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.tree;
 /**
  *  Java Program to Implement Binary Search Tree
  *  @author manjeet(minhas23@gmail.com)

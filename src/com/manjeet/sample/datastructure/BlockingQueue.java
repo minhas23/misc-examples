@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.datastructure;
 
 import java.util.LinkedList;
 import java.util.List;

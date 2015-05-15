@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.array;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

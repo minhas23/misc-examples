@@ -1,4 +1,5 @@
-package com.manjeet.sample;
+package com.manjeet.sample.array;
+
 
 /**
  * geeksforgeeks  http://www.geeksforgeeks.org/maximum-profit-by-buying-and-selling-a-share-at-most-twice/
@@ -11,7 +12,8 @@ public class MaxProfitWith2Transactions {
         int price[] = {2, 30, 15, 10, 8, 25, 80}; //100
         int price2[] = {10, 22, 5, 75, 65, 80}; //87
         int price3[] = {100, 30, 15, 10, 8, 25, 80}; //72
-        System.out.println("Max profit=" + maxProfit(price3, price3.length));
+        System.out.println("Max profit=" + maxProfit2(price, price.length));
+        
     }
     
     
@@ -60,5 +62,39 @@ public class MaxProfitWith2Transactions {
 
    return result;
   }
+  
+  /**
+   * Brute Force method
+   * Max profit with at most two transactions =
+   *    MAX {max profit with one transaction and subarray price[0..i] +
+   *         max profit with one transaction and aubarray price[i+1..n-1]  }
+   * i varies from 0 to n-1.
+   * @param price
+   * @param n
+   * @return
+   */
+  private static int maxProfit2(int price[], int n){
+      int total = 0;
+      for(int i=1 ; i<n ; i++){
+          int localMax1 = getSingleMax(price, 0, i);
+          int localMax2 = getSingleMax(price, i+1, n-1);
+          if(localMax1+localMax2 > total){
+              total = localMax1+localMax2;
+          }
+      }
+      return total;
+  }
+
+private static int getSingleMax(int[] price, int start, int end) {
+    int max = 0 ;
+    for (int i=start; i < end ; i++){
+        for(int j=i+1; j <=end ; j++){
+            if(price[j]-price[i] > max){
+                max = price[j]-price[i];
+            }
+        }
+    }
+    return max;
+}
     
 }

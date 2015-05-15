@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.array;
 
 /**
  * Find if there exist two elements with given difference

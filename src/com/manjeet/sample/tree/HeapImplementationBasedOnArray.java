@@ -1,4 +1,4 @@
-package com.manjeet.sample;
+package com.manjeet.sample.tree;
 /****************************************************************************
  *       This demonstrates binary heap operations along with the heapSort.
  *
