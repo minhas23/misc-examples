@@ -4,7 +4,7 @@
 *.war
 *.ear
 *.DS_Store
-.classpath
+*.classpath
 .project
 bin
 dist
