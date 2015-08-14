@@ -1,4 +1,4 @@
-package com.manjeet.sample.java;
+package com.manjeet.sample.java.database;
 
 
 import java.sql.Connection;  
