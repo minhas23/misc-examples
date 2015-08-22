@@ -1,4 +1,4 @@
-package com.manjeet.sample.java;
+package com.manjeet.sample.java.hadoop;
 import java.io.IOException;
 import java.util.StringTokenizer;
 

@@ -1,4 +1,4 @@
-package com.manjeet.sample.java;
+package com.manjeet.sample.java.hadoop;
 import org.apache.hadoop.hive.ql.exec.Description;
 import org.apache.hadoop.hive.ql.exec.UDF;
 
