@@ -175,6 +175,7 @@ public class MyRequestThread extends Thread
 	private void getSleep(PrintWriter out, long timeout, long connid) 
 	{
 		System.out.println("Sleeping connid="+connid + " ,timeout="+timeout);
+		
 		try 
 		{
 			MyCacheManager myCM = MyCacheManager.getInstance();
@@ -182,7 +183,6 @@ public class MyRequestThread extends Thread
 			Thread.sleep(timeout*1000);
 			String header = ResponseStatus.makeHTTPHeader(200, 1);
 			header = header + "stat:ok";
-			System.out.println("header:" + header);
 			sendOutput(out, header);
 			myCM.removeConnection(connid);
 			// code to return the things

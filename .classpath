@@ -49,5 +49,7 @@
 	<classpathentry kind="lib" path="lib/hive-service-1.2.1.2.3.0.0-2557.jar"/>
 	<classpathentry kind="lib" path="lib/hive-jdbc-1.2.1.2.3.0.0-2557-standalone.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/javax.mail-1.5.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
