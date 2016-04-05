@@ -1,49 +1,34 @@
 package com.manjeet.sample.java.httpserver;
 
+
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-
-
-/**
- * This is used to keep track of all the connections and their state.
- *
- */
 public class MyCacheManager 
 {
-	private static volatile MyCacheManager instance;
+	private static  MyCacheManager instance = new MyCacheManager();
 	
 	private ConcurrentHashMap<Long, RequestInfo> requestMap = null;
 	public static MyCacheManager getInstance()
 	{
-		if (instance == null)
-		{
-			synchronized (MyCacheManager.class)
-			{
-				if (instance == null)
-					instance = new MyCacheManager();
-			}
-		}
-
 		return instance;
 	}
 
 	private MyCacheManager()
 	{
-		requestMap = new ConcurrentHashMap<Long, RequestInfo>(10000);  // limiting max connections here.
+		requestMap = new ConcurrentHashMap<Long, RequestInfo>(10000);  
 	}
 	
-	public void putInCache(long timeout,long connectionID)
+	public  boolean  putInCache(Long connectionID,long timeout, Thread t)
 	{
-		
-		synchronized(requestMap)       // could have used reentrant locks also
-		{
-			if(!requestMap.contains(connectionID))
+            
+			if(requestMap.get(connectionID) == null)
 			{
-				RequestInfo rInf = new RequestInfo(System.currentTimeMillis(),timeout*1000);
+				RequestInfo rInf = new RequestInfo(System.currentTimeMillis(),timeout*1000, t);
 				requestMap.put(connectionID, rInf);
+				return true;
 			}
-		}
+			return false;
 	}
 
 	public HashMap<Long, Long> getStatus() 
@@ -64,7 +49,7 @@ public class MyCacheManager
 		return outTable;
 	}
 
-	public boolean removeConnection(long connectionID) 
+	public boolean removeConnection(Long connectionID) 
 	{
 		RequestInfo rinfo = requestMap.remove(connectionID);
 			if(rinfo == null)
@@ -72,8 +57,11 @@ public class MyCacheManager
 				// no value exist 
 				return false;
 			}
-			else
+			else{
+				rinfo.getThread().interrupt();
 				return true;
+			}
+				
 		
 	}
 }

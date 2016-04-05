@@ -1,5 +1,6 @@
 package com.manjeet.sample.java.httpserver;
 
+
 import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class MyRequestThread extends Thread
 
     public MyRequestThread(Socket socket) 
     {
-    	super("MyMultiServerThread");
+    	super("MyServerThread");
     	this.socket = socket;
     }
 
@@ -42,12 +43,14 @@ public class MyRequestThread extends Thread
 			StringTokenizer tokenizer = new StringTokenizer(methodRequest);
 			String httpMethod = tokenizer.nextToken();
 			String httpQueryString = tokenizer.nextToken();
+			String path = httpQueryString.split("\\?")[0].substring(1);
+			System.out.println("path=" + path);
 			
 			if (methodRequest.startsWith("GET")) 
 			{ 
 		        int paramStart = methodRequest.indexOf('?');
 		        long timeout = 0,connid=0;
-		        if(paramStart > 0) // this is the case for GET/sleep case
+		        if(paramStart > 0) 
 		        {
 		    		String[] tokens = httpQueryString.split("\\?");
 					if(tokens.length > 1){
@@ -66,7 +69,7 @@ public class MyRequestThread extends Thread
 					}
 		        	getSleep(out,timeout,connid);
 		        }
-		        else     
+		        else if(path.equals("server-status"))    
 		        {
 		        	getServerStatus(out);
 		        }
@@ -90,33 +93,34 @@ public class MyRequestThread extends Thread
 					}
 		        }
 					
-					Map<String,String> paramMap = new HashMap<String,String>();
-					String lastParam = null;
-					do {
-						String currentLine = in.readLine();
-						if (currentLine.indexOf("Content-Disposition: form-data") != -1) {
-							String param = currentLine.split("Content-Disposition: form-data; name=")[1];
-							       lastParam = param.replaceAll("\"", "");
-							       StringBuilder value = new StringBuilder();
-							       while (true){
-							    	   currentLine = in.readLine();
-							    	   if(currentLine.contains("Content-Disposition: form-data")){
-							    		   continue;
-							    	   } else if (currentLine.contains("WebKitFormBoundary")){
-							    		   break;
-							    	   } else{
-							    		   value.append(currentLine);
-							    	   }
-							       }
-							       paramMap.put(lastParam, value.toString());
-							     
-					 	  }
-	                                             
-					}while (in.ready()); //End of do-while
-					if(connid == 0){
-						connid = Long.parseLong(paramMap.get("connid"));
-					}
-		        	postKill(out,connid);
+				Map<String,String> paramMap = new HashMap<String,String>();
+				String lastParam = null;
+				do {
+					String currentLine = in.readLine();
+					if (currentLine.indexOf("Content-Disposition: form-data") != -1) {
+						String param = currentLine.split("Content-Disposition: form-data; name=")[1];
+						       lastParam = param.replaceAll("\"", "");
+						       StringBuilder value = new StringBuilder();
+						       while (true){
+						    	   currentLine = in.readLine();
+						    	   if(currentLine.contains("Content-Disposition: form-data")){
+						    		   continue;
+						    	   } else if (currentLine.contains("WebKitFormBoundary")){
+						    		   break;
+						    	   } else{
+						    		   value.append(currentLine);
+						    	   }
+						       }
+						       paramMap.put(lastParam, value.toString());
+						     
+				 	  }
+                                             
+				}while (in.ready()); //End of do-while
+					
+				if(connid == 0){
+					connid = Long.parseLong(paramMap.get("connid"));
+				}
+		        postKill(out,connid);
 		    } 
 			else
 			{
@@ -166,12 +170,6 @@ public class MyRequestThread extends Thread
 		sendOutput(out,sb.toString());
 	}
 
-	/**
-	 * This is the main worker function. It performs GET sleep operation.
-	 * @param out
-	 * @param timeout
-	 * @param connid
-	 */
 	private void getSleep(PrintWriter out, long timeout, long connid) 
 	{
 		System.out.println("Sleeping connid="+connid + " ,timeout="+timeout);
@@ -179,18 +177,25 @@ public class MyRequestThread extends Thread
 		try 
 		{
 			MyCacheManager myCM = MyCacheManager.getInstance();
-			myCM.putInCache(timeout, connid);
-			Thread.sleep(timeout*1000);
-			String header = ResponseStatus.makeHTTPHeader(200, 1);
-			header = header + "stat:ok";
-			sendOutput(out, header);
-			myCM.removeConnection(connid);
-			// code to return the things
+			boolean status = myCM.putInCache(connid, timeout, this);
+			if(status){
+				Thread.sleep(timeout*1000);
+				String header = ResponseStatus.makeHTTPHeader(200, 1);
+				header = header + "stat:ok";
+				sendOutput(out, header);
+				myCM.removeConnection(connid);
+			}else{
+				String header = ResponseStatus.makeHTTPHeader(200, 1);
+				header = header + "stat:already sleeping";
+				sendOutput(out, header);
+			}
+			
 		} 
 		catch (InterruptedException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String header = ResponseStatus.makeHTTPHeader(200, 1);
+			header = header + "stat:killed";
+			sendOutput(out, header);
 		}
 		
 	}

@@ -1,5 +1,6 @@
 package com.manjeet.sample.java.httpserver;
 
+
 public class ResponseStatus 
 {
 	public static String makeHTTPHeader(int return_code, int type) 
@@ -26,12 +27,11 @@ public class ResponseStatus
 	        break;
 	    }
 
-	    s = s + "\r\n"; //other header fields,
-	    s = s + "Connection: close\r\n"; //we can't handle persistent connections
+	    s = s + "\r\n"; 
+	    s = s + "Connection: close\r\n"; 
 	   
 	   
 	    switch (type) {
-	      //plenty of types for you to fill in
 	      case 0:
 	        break;
 	      case 1:
@@ -43,10 +43,8 @@ public class ResponseStatus
 	        break;
 	    }
 
-	    ////so on and so on......
 	    s = s + "\r\n"; //this marks the end of the httpheader
-	    //and the start of the body
-	    //ok return our newly created header!
 	    return s;
 	  }
 }
+
