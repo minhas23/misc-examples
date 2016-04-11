@@ -51,5 +51,8 @@
 	<classpathentry kind="lib" path="lib/httpclient-4.4.jar"/>
 	<classpathentry kind="lib" path="lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/javax.mail-1.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/rxjava-1.0.15.jar"/>
+	<classpathentry kind="lib" path="lib/couchbase-core-io-1.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/couchbase-java-client-2.2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
